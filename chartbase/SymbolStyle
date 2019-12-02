@@ -1,0 +1,182 @@
+package com.edumacs.chart.base;
+
+import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+
+/**
+ * @author moham
+ */
+public class SymbolStyle {
+
+    private SymbolTypeEnum symbolType;
+    private double symbolSize;
+    private Color borderColor;
+    private Color fillColor;
+    private double borderThickness;
+
+    public SymbolStyle() {
+        symbolType = SymbolTypeEnum.None;
+        symbolSize = 4.0f;
+        borderColor = Color.BLACK;
+        fillColor = Color.BLACK;
+        borderThickness = 1f;
+    }
+
+    public void DrawSymbol(GraphicsContext gc, Point2D pt) {
+        gc.setStroke(borderColor);
+        gc.setLineWidth(borderThickness);
+        double x = pt.getX();
+        double y = pt.getY();
+        double size = symbolSize;
+        double halfSize = size / 2;
+        double xm = x - halfSize;
+        double xp = x + halfSize;
+        double ym = y - halfSize;
+        double yp = y + halfSize;
+        switch (symbolType) {
+            case Square:
+                gc.strokeLine(xm, ym, xp, ym);
+                gc.strokeLine(xp, ym, xp, yp);
+                gc.strokeLine(xp, yp, xm, yp);
+                gc.strokeLine(xm, yp, xm, ym);
+                break;
+            case OpenDiamond:
+                gc.strokeLine(x, ym, xp, y);
+                gc.strokeLine(xp, y, x, yp);
+                gc.strokeLine(x, yp, xm, y);
+                gc.strokeLine(xm, y, x, ym);
+                break;
+            case Circle:
+                gc.fillOval(xm, ym, size, size);
+                break;
+            case OpenTriangle:
+                gc.strokeLine(x, ym, xp, yp);
+                gc.strokeLine(xp, yp, xm, yp);
+                gc.strokeLine(xm, yp, x, ym);
+                break;
+            case None:
+                break;
+            case Cross:
+                gc.strokeLine(xm, ym, xp, yp);
+                gc.strokeLine(xp, ym, xm, yp);
+                break;
+            case Star:
+                gc.strokeLine(x, ym, x, yp);
+                gc.strokeLine(xm, y, xp, y);
+                gc.strokeLine(xm, ym, xp, yp);
+                gc.strokeLine(xp, ym, xm, yp);
+                break;
+            case OpenInvertedTriangle:
+                gc.strokeLine(xm, ym, xp, ym);
+                gc.strokeLine(xp, ym, x, yp);
+                gc.strokeLine(x, yp, xm, ym);
+                break;
+            case Plus:
+                gc.strokeLine(x, ym, x, yp);
+                gc.strokeLine(xm, y, xp, y);
+                break;
+            case Dot:
+                gc.fillOval(xm, ym, 5, 5);
+                break;
+            case Box:
+                gc.fillRect(xm, ym, size, size);
+                break;
+            case Diamond:
+                double[] xPoints = new double[4];
+                double[] yPoints = new double[4];
+                xPoints[0] = x;
+                xPoints[1] = xp;
+                xPoints[2] = x;
+                xPoints[3] = xm;
+                yPoints[0] = ym;
+                yPoints[1] = y;
+                yPoints[2] = yp;
+                yPoints[3] = y;
+                gc.fillPolygon(xPoints, yPoints, 4);
+                gc.strokePolygon(xPoints, yPoints, 4);
+                break;
+            case InvertedTriangle:
+                double[] xs = new double[3];
+                double[] ys = new double[3];
+                xs[0] = xm;
+                xs[1] = xp;
+                xs[2] = x;
+                ys[0] = ym;
+                ys[1] = ym;
+                ys[2] = yp;
+                gc.fillPolygon(xs, ys, 3);
+                gc.strokePolygon(xs, ys, 3);
+                break;
+            case Triangle:
+                double[] xps = new double[3];
+                double[] yps = new double[3];
+                xps[0] = x;
+                xps[1] = xp;
+                xps[2] = xm;
+                yps[0] = ym;
+                yps[1] = yp;
+                yps[2] = yp;
+                gc.fillPolygon(xps, yps, 3);
+                gc.strokePolygon(xps, yps, 3);
+                break;
+        }
+    }
+
+    public enum SymbolTypeEnum {
+        Box,
+        Circle,
+        Cross,
+        Diamond,
+        Dot,
+        InvertedTriangle,
+        None,
+        OpenDiamond,
+        OpenInvertedTriangle,
+        OpenTriangle,
+        Square,
+        Star,
+        Triangle,
+        Plus
+    }
+
+    public Color getBorderColor() {
+        return borderColor;
+    }
+
+    public void setBorderColor(Color clr) {
+        borderColor = clr;
+    }
+
+    public Color getFillColor() {
+        return fillColor;
+    }
+
+    public void setFillColor(Color clr) {
+        fillColor = clr;
+    }
+
+    public double getBorderThickness() {
+        return borderThickness;
+    }
+
+    public void setBorderThickness(double th) {
+        borderThickness = th;
+    }
+
+    public double getSymbolSize() {
+        return symbolSize;
+    }
+
+    public void setSymbolSize(double th) {
+        symbolSize = th;
+    }
+
+    public SymbolTypeEnum getSymbolType() {
+        return symbolType;
+    }
+
+    public void setSymbolType(SymbolTypeEnum type) {
+        symbolType = type;
+    }
+}
